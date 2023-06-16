@@ -32,10 +32,11 @@ function getClient()
     if (isset($_GET['code']) ) {
         $client->authenticate($_GET['code']);
         $accessToken=$client->fetchAccessTokenWithAuthCode($_GET['code']);
-        $client->setAccessToken($accessToken);
         if (array_key_exists('error', $accessToken)) {
-                throw new Exception(join(', ', $accessToken));
-            }
+            echo $accessToken[error];
+            throw new Exception(join(', ', $accessToken));
+        }
+        $client->setAccessToken($accessToken);
         if (!file_exists(dirname($tokenPath))) {
             mkdir(dirname($tokenPath), 0700, true);
         }
@@ -56,7 +57,9 @@ function getClient()
             // Request authorization from the user.
             $authUrl = $client->createAuthUrl();
             if (isset($_GET['code']) ) {
-                echo '<a href="https://www.polosoftech.com/staging/google-meet/">Refresh</a>';//after get new access_token and page refresh  
+                echo '<a href="http://localhost/office_work/polosoft/google-calendar-api">Refresh</a>';
+                //https://www.polosoftech.com/staging/google-meet/
+                //after get new access_token and page refresh  
             } else {
                 echo '<a href="'.$authUrl.'">Click here to login: '.$authUrl.'</a>';
             }
@@ -87,7 +90,9 @@ function getClient()
 $client = getClient();
 $service = new Calendar($client);
 if (isset($_GET['code']) ) {
-    header("Location:https://www.polosoftech.com/staging/google-meet/");//after get new access_token and page refresh   
+    header("Location:http://localhost/office_work/polosoft/google-calendar-api/");
+    //https://www.polosoftech.com/staging/google-meet/
+    //after get new access_token and page refresh   
 }
 function gettime($data = null)
 {
@@ -211,7 +216,7 @@ if(isset($_POST['addevent'])){
     // $sql="INSERT INTO `google-meet` SET `eid`='".$eid."',`summary`='". $summary."',`location`='".$location."',`description`='".$description."',`attendees`='".$attendees."',`start_date_time`='".$start_date_time."',`end_date_time`='".$end_date_time."',`html_link`='".$html_link."',`hangout_link`='".$hangout_link."'";
     // $query_insert = $dbConnection->prepare($sql);
     // $query_insert->execute();
-   header("Location:https://www.polosoftech.com/staging/google-meet/?htmlLink=$link");
+   header("Location:http://localhost/office_work/polosoft/google-calendar-api/?htmlLink=$link");
   } catch(Exception $e) {
       echo 'Message: ' .$e->getMessage();
   }
@@ -220,10 +225,12 @@ if(isset($_POST['addevent'])){
 if(isset($_GET['deleteevent'])){
     $id = $_GET['gmeetid'];
     if(!isset($_GET['gmeetid']) && $_GET['gmeetid']==""){
-      header("Location:https://www.polosoftech.com/staging/google-meet/");
+      header("Location:http://localhost/office_work/polosoft/google-calendar-api/");
+      //https://www.polosoftech.com/staging/google-meet/
     }
     $service->events->delete('primary', $id);
-    header("Location:https://www.polosoftech.com/staging/google-meet/?delete_status=Event successfully deleted");
+    header("Location:http://localhost/office_work/polosoft/google-calendar-api/?delete_status=Event successfully deleted");
+    //https://www.polosoftech.com/staging/google-meet/?delete_status=Event successfully deleted
  
 }
 
